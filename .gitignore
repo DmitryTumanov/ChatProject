@@ -4,8 +4,8 @@ ChatClient/ChatClient/bin/
 ChatClient/ChatClient/obj/
 ChatServer/.vs/
 ChatServer/packages/
-ChatServer/ChatClient/bin/
-ChatServer/ChatClient/obj/
+ChatServer/ChatServer/bin/
+ChatServer/ChatServer/obj/
 ClientAddition/1Lab/bin/
 ClientAddition/1Lab/obj/
 ClientAddition/2Lab/bin/

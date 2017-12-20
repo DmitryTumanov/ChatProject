@@ -1,0 +1,115 @@
+﻿<Window x:Class="ChatClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatClient"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="400" Width="720" Closed="MainWindow_OnClosed" ResizeMode="NoResize" Background="#FFEDEDED">
+    <Window.Resources>
+        <Style x:Key="Style1" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="#FFA0FF65"/>
+            <Setter Property="MinHeight" Value="20"/>
+        </Style>
+        <local:MessageTemplateSelector x:Key="MessageTemplateSelector" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Label Margin="2" Foreground="#FF919191">User Name:</Label>
+                <TextBox Margin="5" Width="150" Height="20" Name="CurrentUserName" Background="#FFFAFAFA" LostFocus="CurrentUserName_OnLostFocus" BorderBrush="#FF80FF67" BorderThickness="2"></TextBox>
+                <PasswordBox Margin="5" Width="150" Height="20" Name="CurrentUserPassword" Background="#FFFAFAFA" BorderBrush="#FF80FF67" BorderThickness="2"></PasswordBox>
+                <Button Margin="5,5,5,4.6" Name="SaveUserNameButton" Click="SaveCurrentUserName" Width="60">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF198E12" Offset="1"/>
+                            <GradientStop Color="#FF34ED28"/>
+                        </LinearGradientBrush>
+                    </Button.Background> Login
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                <Label Foreground="#FF919191" Margin="2">Cipher:</Label>
+                <ComboBox Width="170" Margin="5" Name="CipherTypeList">
+                    <ComboBoxItem IsSelected="True">Цезарь</ComboBoxItem>
+                    <ComboBoxItem>Des</ComboBoxItem>
+                    <ComboBoxItem>Triple Des</ComboBoxItem>
+                    <ComboBoxItem>Triple Des With 2 Keys</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <ListBox Margin="10" Name="ActualUsers" SelectionChanged="ActualUsers_OnSelectionChanged" Background="#FFEDEDED" BorderBrush="#FF80FF67" BorderThickness="2" ItemContainerStyle="{StaticResource Style1}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="local:User">
+                        <Grid Width="130">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding UserName}"/>
+                            <TextBlock Text="{Binding UnreadMessagesCount}" Grid.Column="1" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <ListBox  Grid.Column="1" Margin="10" Name="ActualMessages" BorderBrush="#FF80FF67" Background="#FFEDEDED" BorderThickness="2" ItemContainerStyle="{StaticResource Style1}" MouseDoubleClick="ActualMessages_OnMouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type local:Message}">
+                        <DataTemplate.Resources>
+                            <DataTemplate x:Key="CurrentUserMessage">
+                                <Grid Width="470">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding MessageText}" Foreground="Blue"/>
+                                    <TextBlock Text="{Binding StringDate}" Grid.Column="1" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </DataTemplate>
+                            <DataTemplate x:Key="NotCurrentUserMessage">
+                                <Grid Width="470">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding MessageText}" Foreground="Red"/>
+                                    <TextBlock Text="{Binding StringDate}" Grid.Column="1" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataTemplate.Resources>
+                        <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource MessageTemplateSelector}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="10 0 10 10" Name="MessageArea" BorderBrush="#FF80FF67" BorderThickness="2" Background="#FFFAFAFA"></TextBox>
+            <Button Grid.Column="1" Margin="5,10,9.6,20.2" Name="SendButton" Click="SendButton_OnClick" BorderBrush="#FF3BF427" Foreground="#FFF1F1F1" RenderTransformOrigin="1,0">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF198E12" Offset="1"/>
+                        <GradientStop Color="#FF34ED28"/>
+                    </LinearGradientBrush>
+                </Button.Background> Send
+            </Button>
+        </Grid>
+    </Grid>
+</Window>
